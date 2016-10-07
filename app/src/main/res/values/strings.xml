@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Collaborate_MHW</string>
+    <string name="app_name">Collaborate</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -14,4 +14,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <!-- OAuth -->
+    <string name="facebook_app_id">1782315175313332</string>
+
 </resources>
