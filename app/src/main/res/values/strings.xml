@@ -15,6 +15,10 @@
         completions."
     </string>
 
+    <!-- Notification strings -->
+    <string name="send_button">Send</string>
+    <string name="notification_message_hint">Hint</string>
+
     <!-- OAuth -->
     <string name="facebook_app_id">191888224582244</string>
 
