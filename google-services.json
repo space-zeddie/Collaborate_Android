@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "704416806825",
+    "firebase_url": "https://collaborate-be273.firebaseio.com",
+    "project_id": "collaborate-be273",
+    "storage_bucket": "collaborate-be273.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704416806825:android:5a03e58c91af5e23",
+        "android_client_info": {
+          "package_name": "com.example.citizenzer0.collaborate_mhw"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "704416806825-h8ia201ivviuflj04a8b0dv04ovgsb4k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiMz14tlJaHvkaY7kEAuHhHkQzsuNKfGY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
