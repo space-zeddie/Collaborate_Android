@@ -20,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -73,10 +74,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         sign_up_success = false;
 
+        Log.d("login", "" + sign_up_success);
+
         SharedPreferences pref  = this.getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
         if(pref.contains("MY_KEY") && pref.getBoolean("MY_KEY", false)){ //first stratup or user has not signed in yet
             AppEventsLogger.activateApp(this);
             setContentView(R.layout.activity_login);
+            Log.d("login", "first startup");
 
             mLoginFormView = findViewById(R.id.login_form);
             mProgressView = findViewById(R.id.login_progress);
@@ -88,6 +92,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
+                    Log.d("login", "successful login!");
                     sign_up_success = true;
                 }
 
@@ -103,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             });
 
         } else { //already signed up
+            Log.d("login", "already signed up");
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }

@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,12 +12,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.microsoft.windowsazure.notifications.NotificationsManager;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
 
 import javax.crypto.Mac;
@@ -199,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param v
      */
-    public void sendNotificationButtonOnClick(View v) {
+    /*public void sendNotificationButtonOnClick(View v) {
         EditText notificationText = (EditText) findViewById(R.id.editTextNotificationMessage);
         final String json = "{\"data\":{\"message\":\"" + notificationText.getText().toString() + "\"}}";
 
@@ -266,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }.start();
-    }
+    }*/
 
 
 
