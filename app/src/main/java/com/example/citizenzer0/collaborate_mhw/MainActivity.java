@@ -55,12 +55,12 @@ public class MainActivity extends FragmentActivity implements IdeaItemFragment.O
             mPager = (ViewPager)findViewById(R.id.pager);
             mPager.setAdapter(mAdapter);
 
-
+            //mPager.
             // Create a new Fragment to be placed in the activity layout
-            IdeaItemFragment firstFragment = new IdeaItemFragment();
+            /*IdeaItemFragment firstFragment = new IdeaItemFragment();
             firstFragment.setArguments(getIntent().getExtras());
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+                    .add(R.id.fragment_container, firstFragment).commit();*/
         }
     }
 
