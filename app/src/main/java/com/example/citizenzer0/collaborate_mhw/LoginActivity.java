@@ -4,8 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,15 +20,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -68,58 +66,56 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private boolean sign_up_success;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppEventsLogger.activateApp(this);
-        setContentView(R.layout.activity_login);
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        populateAutoComplete();
+        sign_up_success = false;
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
+        SharedPreferences pref  = this.getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        if(pref.contains("MY_KEY") && pref.getBoolean("MY_KEY", false)){ //first stratup or user has not signed in yet
+            AppEventsLogger.activateApp(this);
+            setContentView(R.layout.activity_login);
+
+            mLoginFormView = findViewById(R.id.login_form);
+            mProgressView = findViewById(R.id.login_progress);
+
+            // facebook sign in
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            callbackManager = CallbackManager.Factory.create();
+            LoginButton loginButton = (LoginButton) mLoginFormView.findViewById(R.id.login_button);
+            loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    sign_up_success = true;
                 }
-                return false;
-            }
-        });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+                @Override
+                public void onCancel() {
+                    sign_up_success = false;
+                }
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+                @Override
+                public void onError(FacebookException e) {
+                    sign_up_success = false;
+                }
+            });
 
-        // facebook sign in
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) mLoginFormView.findViewById(R.id.login_button);
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                //TODO
-            }
+        } else { //already signed up
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        //SharedPreferences pref  = this.getSharedPreferences("my_prefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
 
-            @Override
-            public void onCancel() {
-                //TODO
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-                //TODO
-            }  });
+        if(sign_up_success){
+            editor.putBoolean("MY_KEY", true);
+            editor.commit();
+        }
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        setContentView(R.layout.activity_main);
     }
 
     private void populateAutoComplete() {
