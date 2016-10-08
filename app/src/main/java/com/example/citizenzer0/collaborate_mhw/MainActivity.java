@@ -2,7 +2,11 @@ package com.example.citizenzer0.collaborate_mhw;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
@@ -17,7 +21,7 @@ import java.net.URLEncoder;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity implements IdeaItemFragment.OnListFragmentInteractionListener {
 
     private String HubEndpoint = null;
     private String HubSasKeyName = null;
@@ -28,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
+    static final int NUM_ITEMS = 10;
+    MyAdapter mAdapter;
+    ViewPager mPager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +45,26 @@ public class MainActivity extends AppCompatActivity {
         mainActivity = this;
         NotificationsManager.handleNotifications(this, NotificationSettings.SenderId, MyHandler.class);
         registerWithNotificationHubs();
+
+        if (findViewById(R.id.fragment_container) != null) {
+            if (savedInstanceState != null) {
+                return;
+            }
+            mAdapter = new MyAdapter(getSupportFragmentManager());
+
+            mPager = (ViewPager)findViewById(R.id.pager);
+            mPager.setAdapter(mAdapter);
+
+
+            // Create a new Fragment to be placed in the activity layout
+            IdeaItemFragment firstFragment = new IdeaItemFragment();
+            firstFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, firstFragment).commit();
+        }
     }
+
+
 
     public void registerWithNotificationHubs()
     {
@@ -182,6 +210,11 @@ public class MainActivity extends AppCompatActivity {
         return token;
     }
 
+    @Override
+    public void onListFragmentInteraction() {
+        Log.d("fragment", "onlistfragmentinteraction");
+    }
+
     /**
      * Send Notification button click handler. This method parses the
      * DefaultFullSharedAccess connection string and generates a SaS token. The
@@ -189,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
      * notification hub. The text in the editTextNotificationMessage control
      * is added as the JSON body for the request to add a GCM message to the hub.
      *
-     * @param v
+     * @param
      */
     /*public void sendNotificationButtonOnClick(View v) {
         EditText notificationText = (EditText) findViewById(R.id.editTextNotificationMessage);
@@ -260,6 +293,22 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }*/
 
+
+    public static class MyAdapter extends FragmentPagerAdapter {
+        public MyAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return IdeaItemFragment.newInstance(position);
+        }
+    }
 
 
 }

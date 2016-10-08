@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.iid.InstanceID;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.microsoft.windowsazure.messaging.NotificationHub;
 
@@ -31,6 +34,10 @@ public class RegistrationIntentService extends IntentService {
         String storedToken = null;
 
         try {
+            InstanceID instanceID = InstanceID.getInstance(this);
+            String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
+                    GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+            Log.d("GCM ID", token);
             String FCM_token = FirebaseInstanceId.getInstance().getToken();
             Log.d(TAG, "FCM Registration Token: " + FCM_token);
 
