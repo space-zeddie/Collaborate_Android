@@ -15,23 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"/>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="1">
-        <FrameLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <fragment android:name="com.example.citizenzer0.collaborate_mhw.IdeaItemFragment"
-                android:id="@+id/headlines_fragment"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
-        </FrameLayout>
-    </android.support.v4.view.ViewPager>
 
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <!--<Button
         android:layout_width="wrap_content"

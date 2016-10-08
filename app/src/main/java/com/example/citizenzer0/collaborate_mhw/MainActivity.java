@@ -1,17 +1,16 @@
 package com.example.citizenzer0.collaborate_mhw;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.citizenzer0.collaborate_mhw.dummy.IdeaFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.microsoft.windowsazure.notifications.NotificationsManager;
@@ -21,7 +20,7 @@ import java.net.URLEncoder;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-public class MainActivity extends FragmentActivity implements IdeaItemFragment.OnListFragmentInteractionListener {
+public class MainActivity extends FragmentActivity implements IdeaFragment.OnFragmentInteractionListener {
 
     private String HubEndpoint = null;
     private String HubSasKeyName = null;
@@ -33,7 +32,7 @@ public class MainActivity extends FragmentActivity implements IdeaItemFragment.O
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     static final int NUM_ITEMS = 10;
-    MyAdapter mAdapter;
+   // MyAdapter mAdapter;
     ViewPager mPager;
 
 
@@ -47,21 +46,26 @@ public class MainActivity extends FragmentActivity implements IdeaItemFragment.O
         registerWithNotificationHubs();
 
         if (findViewById(R.id.fragment_container) != null) {
+
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
             if (savedInstanceState != null) {
                 return;
             }
-            mAdapter = new MyAdapter(getSupportFragmentManager());
 
-            mPager = (ViewPager)findViewById(R.id.pager);
-            mPager.setAdapter(mAdapter);
+            // Create an instance of ExampleFragment
+            IdeaFragment firstFragment = new IdeaFragment();
 
-            //mPager.
-            // Create a new Fragment to be placed in the activity layout
-            /*IdeaItemFragment firstFragment = new IdeaItemFragment();
+            // In case this activity was started with special instructions from an Intent,
+            // pass the Intent's extras to the fragment as arguments
             firstFragment.setArguments(getIntent().getExtras());
+
+            // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();*/
+                    .add(R.id.fragment_container, firstFragment).commit();
         }
+
     }
 
 
@@ -211,10 +215,9 @@ public class MainActivity extends FragmentActivity implements IdeaItemFragment.O
     }
 
     @Override
-    public void onListFragmentInteraction() {
-        Log.d("fragment", "onlistfragmentinteraction");
+    public void onFragmentInteraction(Uri uri) {
+        Log.d("fragment", "interaction");
     }
-
     /**
      * Send Notification button click handler. This method parses the
      * DefaultFullSharedAccess connection string and generates a SaS token. The
@@ -292,23 +295,6 @@ public class MainActivity extends FragmentActivity implements IdeaItemFragment.O
             }
         }.start();
     }*/
-
-
-    public static class MyAdapter extends FragmentPagerAdapter {
-        public MyAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_ITEMS;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return IdeaItemFragment.newInstance(position);
-        }
-    }
 
 
 }
